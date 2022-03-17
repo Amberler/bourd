@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api/models"
 	"api/pkg/logging"
 	"api/pkg/setting"
 	"api/routers"
@@ -17,6 +18,7 @@ func main() {
 	log.Println("Hello,api 正在启动")
 	setting.SetUp() //初始化配置
 	logging.SetUp() //设置日志文件
+	models.SetUp()  //设置数据库
 
 	router := routers.InitRouter() //初始化路由
 
