@@ -1,6 +1,8 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type User struct {
 	gorm.Model        //会自动添加id,created_at,updated_at,deleted_at四个字段，可以进入看下类型
@@ -13,4 +15,20 @@ type User struct {
 	FollowNum  int    `gorm:"default:0;"`
 	FansNum    int    `gorm:"default:0;"`
 	State      int    `gorm:"type:tinyint(1);default:0;" json:"-"` //用户状态，比如=1账号冻结，=2不允许聊天之类的,默认=0,为json时不返回
+}
+
+// FindUserByMobile 根据手机号查找用户
+func FindUserByMobile(mobile string) (*User, error) {
+	var user User
+	err := db.Where("mobile = ?", mobile).First(&user).Error
+	return &user, err
+}
+
+// CreateUser 根据手机号创建用户
+func CreateUser(mobile string) (*User, error) {
+	user := User{
+		Mobile: mobile,
+	}
+	err := db.Create(&user).Error
+	return &user, err
 }

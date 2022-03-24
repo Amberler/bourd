@@ -20,8 +20,9 @@ func InitRouter() *gin.Engine {
 	//路由分组，apiV1代表v1版本的路由组
 	apiV1 := r.Group("/api/v1")
 	{
-		//app版本升级
-		apiV1.GET("version", v1.GetAppVersion)
+		apiV1.GET("version", v1.GetAppVersion) //app版本升级
+		apiV1.POST("login", v1.Login)          //登陆
+		//apiV1.POST("register", v1.register)    //登陆
 	}
 	return r
 }
