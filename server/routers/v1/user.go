@@ -11,12 +11,12 @@ import (
 
 func Login(c *gin.Context) {
 	mobile := c.PostForm("mobile") //取出参数手机号mobile
-	vCode := c.PostForm("code")    //取出参数验证码code
+	passwd := c.PostForm("passwd") //取出密码
 
 	// 对请求参数验证
 	validate := validation.Validation{}
 	validate.Mobile(mobile, "Mobile").Message("手机号有误")
-	validate.Length(vCode, 4, "Code").Message("验证码格式不正确")
+	validate.MinSize(passwd, 8, "Passwd").Message("密码至少8位")
 	// 校验错误，返回错误信息
 	if isOk := checkValidation(&validate, c); isOk == false {
 		return
@@ -34,27 +34,42 @@ func Login(c *gin.Context) {
 		}
 	}
 
+	// 密码校验
+	if passwd != user.Passwd {
+		util.ResponseWithJson(e.ErrorAuthPassword, "密码错误", c)
+		return
+	}
+
 	// 生成token
-	token, err := util.GeterateToken(user.ID, user.Mobile)
+	token, err := util.GenerateToken(user.ID)
 	if err != nil {
 		util.ResponseWithJson(e.ERROR, "创建token失败", c)
 		return
 	}
 
 	util.ResponseWithJson(e.SUCCESS, gin.H{
-		"User":  user,
+		"User": map[string]interface{}{
+			"Mobile":    user.Mobile,
+			"Name":      user.Name,
+			"Sex":       user.Sex,
+			"Age":       user.Age,
+			"Avatar":    user.Avatar,
+			"FollowNum": user.FollowNum,
+			"FansNum":   user.FansNum,
+			"State":     user.State,
+		},
 		"Token": token,
 	}, c)
 }
 
 func Register(c *gin.Context) {
 	mobile := c.PostForm("mobile") //取出参数手机号mobile
-	vCode := c.PostForm("code")    //取出参数验证码code
+	passwd := c.PostForm("passwd") //取出密码
 
 	// 对请求参数验证
 	validate := validation.Validation{}
 	validate.Mobile(mobile, "Mobile").Message("手机号有误")
-	validate.Length(vCode, 4, "Code").Message("验证码格式不正确")
+	validate.MinSize(passwd, 8, "Passwd").Message("密码至少8位")
 	// 校验错误，返回错误信息
 	if isOk := checkValidation(&validate, c); isOk == false {
 		return
@@ -64,7 +79,7 @@ func Register(c *gin.Context) {
 	user, err := models.FindUserByMobile(mobile)
 	if gorm.IsRecordNotFoundError(err) {
 		// 查询用户不存在，执行注册逻辑
-		user, err = models.CreateUser(mobile)
+		user, err = models.CreateUser(mobile, passwd)
 		if err != nil {
 			util.ResponseWithJson(e.ERROR, "用户注册失败", c)
 			return
@@ -75,14 +90,23 @@ func Register(c *gin.Context) {
 	}
 
 	// 生成token
-	token, err := util.GeterateToken(user.ID, user.Mobile)
+	token, err := util.GenerateToken(user.ID)
 	if err != nil {
 		util.ResponseWithJson(e.ERROR, "创建token失败", c)
 		return
 	}
 
 	util.ResponseWithJson(e.SUCCESS, gin.H{
-		"User":  user,
+		"User": map[string]interface{}{
+			"Mobile":    user.Mobile,
+			"Name":      user.Name,
+			"Sex":       user.Sex,
+			"Age":       user.Age,
+			"Avatar":    user.Avatar,
+			"FollowNum": user.FollowNum,
+			"FansNum":   user.FansNum,
+			"State":     user.State,
+		},
 		"Token": token,
 	}, c)
 }

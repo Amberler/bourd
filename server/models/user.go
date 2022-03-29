@@ -7,6 +7,7 @@ import (
 type User struct {
 	gorm.Model        //会自动添加id,created_at,updated_at,deleted_at四个字段，可以进入看下类型
 	Mobile     string `gorm:"type:char(11);index;unique;not null;" json:"mobile,omitempty"` //手机号,加索引，唯一，不为空
+	Passwd     string `gorm:"type:varchar(100);"`                                           //密码
 	Name       string `gorm:"type:varchar(12);"`                                            //用户昵称，3-12个字符
 	Desc       string `gorm:"type:varchar(100);"`
 	Sex        int    `gorm:"type:tinyint(1);default:0;"`
@@ -25,9 +26,10 @@ func FindUserByMobile(mobile string) (*User, error) {
 }
 
 // CreateUser 根据手机号创建用户
-func CreateUser(mobile string) (*User, error) {
+func CreateUser(mobile string, passwd string) (*User, error) {
 	user := User{
 		Mobile: mobile,
+		Passwd: passwd,
 	}
 	err := db.Create(&user).Error
 	return &user, err
