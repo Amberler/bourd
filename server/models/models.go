@@ -37,7 +37,7 @@ func SetUp() {
 	db.LogMode(true)
 
 	////自动检查 Tag 结构是否变化，变化则进行迁移，需要的参数为数据库模型结构体
-	db.AutoMigrate(&User{})
+	db.AutoMigrate(&User{}, &AppVersion{})
 
 	// 设置空闲时候的最大链接数
 	db.DB().SetMaxIdleConns(10)

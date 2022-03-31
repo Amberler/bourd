@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.title}}</title>
+</head>
+<body>
+
+<form id="form" method="post" action="/manage/appversion" enctype="multipart/form-data">
+    App版本号:<br>
+    <input type="text" name="version" placeholder="格式：1.0.0">
+    <br>
+    iOS最低支持版本号:<br>
+    <input type="text" name="ios_min_version" placeholder="格式：1.0.0">
+    <br>
+    安卓最低支持版本号:<br>
+    <input type="text" name="android_min_version" placeholder="格式：1.0.0">
+    <br>
+    版本更新说明:<br>
+    <textarea name="desc" rows="10" cols="30" placeholder="">
+
+    </textarea>
+    <br>
+    app下载地址（仅限安卓）注意：如果上传了apk文件，则此栏无效，下载地址与apk文件必须完成一个:<br>
+    <input type="text" name="app_url">
+    <br>
+    <input type="file" name="apk_file">
+
+    <br><br>
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
