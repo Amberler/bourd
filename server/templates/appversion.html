@@ -8,21 +8,31 @@
 
 <form id="form" method="post" action="/manager/appversion" enctype="multipart/form-data">
     App版本号:<br>
-    <input type="text" name="version" placeholder="格式：1.0.0">
+    <label>
+        <input type="text" name="version" placeholder="格式：1.0.0">
+    </label>
     <br>
     iOS最低支持版本号:<br>
-    <input type="text" name="ios_min_version" placeholder="格式：1.0.0">
+    <label>
+        <input type="text" name="ios_min_version" placeholder="格式：1.0.0">
+    </label>
     <br>
     安卓最低支持版本号:<br>
-    <input type="text" name="android_min_version" placeholder="格式：1.0.0">
+    <label>
+        <input type="text" name="android_min_version" placeholder="格式：1.0.0">
+    </label>
     <br>
     版本更新说明:<br>
-    <textarea name="desc" rows="10" cols="30" placeholder="">
+    <label>
+<textarea name="desc" rows="10" cols="30" placeholder="">
 
-    </textarea>
+</textarea>
+    </label>
     <br>
     app下载地址（仅限安卓）注意：如果上传了apk文件，则此栏无效，下载地址与apk文件必须完成一个:<br>
-    <input type="text" name="app_url">
+    <label>
+        <input type="text" name="app_url">
+    </label>
     <br>
     <input type="file" name="apk_file">
 

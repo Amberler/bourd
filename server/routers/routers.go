@@ -30,6 +30,10 @@ func InitRouter() *gin.Engine {
 			apiV1Token.POST("version", v1.GetAppVersion) //app版本更新
 		}
 
+		// 测试api
+		apiV1.POST("a", v1.A) // 注册
+		apiV1.GET("a", v1.A)  // 注册
+
 	}
 	r.LoadHTMLGlob("templates/*")
 	appManage := r.Group("manager")
