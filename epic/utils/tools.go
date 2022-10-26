@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"encoding/json"
 	"epic/conf"
 	"fmt"
 	"io"
@@ -13,7 +14,7 @@ func RemoteData() {
 	if err != nil {
 		log.Fatal("远程数据请求失败")
 	}
-	
+
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
@@ -21,13 +22,19 @@ func RemoteData() {
 		}
 	}(resp.Body)
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
+	body, e := io.ReadAll(resp.Body)
+	if e != nil {
 		log.Fatal("远程数据请求失败")
 	}
-	fmt.Println(string(body))
-	//fmt.Println(resp.StatusCode)
-	//if resp.StatusCode == 200 {
-	//	fmt.Println("ok")
-	//}
+
+	m := make(map[string]interface{})
+
+	error := json.Unmarshal(body, &m)
+
+	if error != nil {
+		panic(error)
+	}
+
+	fmt.Printf("%+v\n", m)
+
 }
